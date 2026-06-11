@@ -19,6 +19,17 @@ on:
       - package.json
       - package-lock.json
 jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+
   test:
     runs-on: ubuntu-latest
     steps:
