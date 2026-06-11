@@ -2,8 +2,18 @@ name: CI
 on:
   push:
     branches: [main]
+    paths:
+      - src/**/*.ts
+      - tsconfig.json
+      - package.json
+      - package-lock.json
   pull_request:
     branches: [main]
+    paths:
+      - src/**/*.ts
+      - tsconfig.json
+      - package.json
+      - package-lock.json
 jobs:
   typecheck:
     runs-on: ubuntu-latest
