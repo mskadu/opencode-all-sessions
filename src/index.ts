@@ -47,7 +47,6 @@ export const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
         template: "$ARGUMENTS",
         description:
           "List all sessions across projects. Usage: /all-sessions, /all-sessions <n>, /all-sessions --id <sessionID>",
-        agent: "build",
       }
     },
 
