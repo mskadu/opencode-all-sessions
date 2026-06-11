@@ -30,7 +30,7 @@ Or install from the OpenCode command palette (`Ctrl+P` → Install Plugin → `o
 
 On selection, a new terminal window opens running `opencode <session.directory>`, and the current TUI session exits.
 
-## Related
+A new terminal is necessary because OpenCode does not expose an API to change its working directory at runtime (see [#6697](https://github.com/anomalyco/opencode/issues/6697), [#1143](https://github.com/anomalyco/opencode/issues/1143)). Without that, the only way to resume a session in a different project is to spawn a fresh process in that directory.
 
-A core feature request has been filed to add native cross-project session support to OpenCode:
-[anomalyco/opencode#31932](https://github.com/anomalyco/opencode/issues/31932)
+A feature request for native cross-project session support -- including a runtime directory API -- has been filed at
+[anomalyco/opencode#31932](https://github.com/anomalyco/opencode/issues/31932). If that lands, this plugin's workaround becomes unnecessary for the directory-switching piece.
