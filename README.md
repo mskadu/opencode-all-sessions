@@ -29,3 +29,8 @@ Or install from the OpenCode command palette (`Ctrl+P` → Install Plugin → `o
 | `/all-sessions --id <sessionID>` | Resume a specific session by ID |
 
 On selection, a new terminal window opens running `opencode <session.directory>`, and the current TUI session exits.
+
+## Related
+
+A core feature request has been filed to add native cross-project session support to OpenCode:
+[anomalyco/opencode#31932](https://github.com/anomalyco/opencode/issues/31932)
