@@ -5,6 +5,7 @@ on:
     paths:
       - src/**/*.ts
       - tsconfig.json
+      - vitest.config.ts
       - package.json
       - package-lock.json
   pull_request:
@@ -12,10 +13,11 @@ on:
     paths:
       - src/**/*.ts
       - tsconfig.json
+      - vitest.config.ts
       - package.json
       - package-lock.json
 jobs:
-  typecheck:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -24,4 +26,4 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx tsc --noEmit
+      - run: npm test

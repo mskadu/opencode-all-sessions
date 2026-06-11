@@ -1,10 +1,10 @@
 import type { Plugin } from "@opencode-ai/plugin"
 
-function text(text: string): any {
+export function text(text: string): any {
   return { type: "text" as const, text }
 }
 
-function relativeAge(ms: number): string {
+export function relativeAge(ms: number): string {
   const seconds = Math.floor((Date.now() - ms) / 1000)
   if (seconds < 60) return `${seconds}s`
   const minutes = Math.floor(seconds / 60)
@@ -15,14 +15,14 @@ function relativeAge(ms: number): string {
   return `${days}d`
 }
 
-function truncatePath(p: string, maxLen: number): string {
+export function truncatePath(p: string, maxLen: number): string {
   const cleaned = p.replace(/^\/Users\/[^/]+/, "~")
   if (cleaned.length <= maxLen) return cleaned
   const parts = cleaned.split("/")
   return `.../${parts.slice(-3).join("/")}`
 }
 
-function formatLine(idx: number, session: any): string {
+export function formatLine(idx: number, session: any): string {
   const title = session.title || session.slug || "(untitled)"
   const dir = truncatePath(session.directory || session.path || "", 45)
   const age = session.time_created ? relativeAge(session.time_created) : ""
@@ -33,13 +33,13 @@ function formatLine(idx: number, session: any): string {
   ].join("\n")
 }
 
-function getSessions(resp: any): any[] {
+export function getSessions(resp: any): any[] {
   if (Array.isArray(resp)) return resp
   if (resp?.data && Array.isArray(resp.data)) return resp.data
   return []
 }
 
-const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
+export const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
   return {
     async config(config) {
       config.command ??= {}
