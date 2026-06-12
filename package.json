@@ -4,7 +4,7 @@
   "description": "OpenCode TUI plugin — list and jump to sessions across all projects from anywhere",
   "license": "MIT",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "dependencies": {
     "@opencode-ai/plugin": "^1.17.0"
   },

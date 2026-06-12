@@ -1,36 +1,13 @@
 // opencode-all-sessions plugin
 // Lists all sessions across projects and opens a new terminal on selection.
 
-import type { Plugin } from "@opencode-ai/plugin"
-
 const SENTINEL = "__ALL_SESSIONS_COMMAND_HANDLED__"
 
-interface Session {
-  id: string
-  slug?: string
-  title?: string
-  directory?: string
-  path?: string
-  project_id?: string
-  time_created?: number
-  time_updated?: number
-  model?: string
-  tokens_input?: number
-  tokens_output?: number
-  parent_id?: string
-  metadata?: Record<string, unknown>
-}
-
-interface SessionListResponse {
-  data?: Session[]
-  [key: string]: unknown
-}
-
-export function text(text: string): { type: "text"; text: string } {
+function text(text) {
   return { type: "text", text }
 }
 
-export function relativeAge(ms: number): string {
+function relativeAge(ms) {
   const seconds = Math.floor((Date.now() - ms) / 1000)
   if (seconds < 60) return `${seconds}s`
   const minutes = Math.floor(seconds / 60)
@@ -41,17 +18,14 @@ export function relativeAge(ms: number): string {
   return `${days}d`
 }
 
-export function truncatePath(p: string, maxLen: number): string {
+function truncatePath(p, maxLen) {
   const cleaned = p.replace(/^\/Users\/[^/]+/, "~")
   if (cleaned.length <= maxLen) return cleaned
   const parts = cleaned.split("/")
   return `.../${parts.slice(-3).join("/")}`
 }
 
-export function formatLine(
-  idx: number,
-  session: Session,
-): string {
+function formatLine(idx, session) {
   const title = session.title || session.slug || "(untitled)"
   const dir = truncatePath(session.directory || session.path || "", 45)
   const age = session.time_created ? relativeAge(session.time_created) : ""
@@ -62,19 +36,13 @@ export function formatLine(
   ].join("\n")
 }
 
-export function getSessions(
-  resp: Session[] | SessionListResponse,
-): Session[] {
+function getSessions(resp) {
   if (Array.isArray(resp)) return resp
   if (resp?.data && Array.isArray(resp.data)) return resp.data
   return []
 }
 
-async function sendResponse(
-  client: any,
-  sessionID: string,
-  message: string,
-): Promise<void> {
+async function sendResponse(client, sessionID, message) {
   await client.session.prompt({
     path: { id: sessionID },
     body: {
@@ -84,9 +52,9 @@ async function sendResponse(
   })
 }
 
-const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
+const AllSessionsPlugin = async ({ client, $ }) => {
   return {
-    async config(config: Record<string, any>) {
+    async config(config) {
       config.command ??= {}
       config.command["all-sessions"] = {
         template: "$ARGUMENTS",
@@ -95,16 +63,12 @@ const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
       }
     },
 
-    async "command.execute.before"(input: {
-      command: string
-      arguments: string
-      sessionID: string
-    }) {
+    async "command.execute.before"(input) {
       if (input.command !== "all-sessions") return
       const args = (input.arguments || "").trim()
       const sessionID = input.sessionID
 
-      let sessions: Session[]
+      let sessions
       try {
         const resp = await client.session.list({
           directory: "",
@@ -133,7 +97,7 @@ const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
       const idMatch = args.match(/^--id\s+(\S+)/)
       const numMatch = args.match(/^(\d+)$/)
 
-      let selectedSession: Session | null = null
+      let selectedSession = null
 
       if (idMatch) {
         const sid = idMatch[1]
@@ -184,7 +148,7 @@ const AllSessionsPlugin: Plugin = async ({ client, $ }) => {
         throw new Error(SENTINEL)
       }
 
-      const lines: string[] = [
+      const lines = [
         `Sessions (${sessions.length} total):`,
         "",
       ]
